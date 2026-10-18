@@ -193,11 +193,28 @@ cargo run --release -p artcraft-launcher   # the desktop app
 cargo xtask ci                             # fmt, clippy, tests and the wasm check
 ```
 
-The web version builds with [trunk](https://trunkrs.dev/):
+The web version builds with [trunk](https://trunk-rs.github.io/trunk/):
 
 ```sh
 rustup target add wasm32-unknown-unknown
 cd apps/artcraft-launcher-web && trunk serve
+```
+
+### Nix (experimental)
+
+`flake.nix` gives a dev shell (`nix develop`, then the cargo commands above) and a package:
+
+```sh
+nix run github:storytold/craft-launcher
+```
+
+On NixOS this uses the system's graphics drivers. On other distros, a Nix-built program can't load
+the host's GPU drivers, so the window may fail to open. Run it through
+[nixGL](https://github.com/nix-community/nixGL) instead (NVIDIA needs nixGL's matching NVIDIA
+variant), or use the AppImage, `.deb` or `.rpm` release:
+
+```sh
+nix run --impure github:nix-community/nixGL -- nix run github:storytold/craft-launcher
 ```
 
 ### Installing your own builds
